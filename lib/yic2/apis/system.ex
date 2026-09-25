@@ -1,0 +1,36 @@
+defmodule Yic2.Apis.System do
+
+    alias Yic2.Apis.TokenRegistry
+
+    def call( method, url, result ), do: call(method, url, [], result)
+
+    def call( result, 0 ), do: {:ok, %{key: result, value: %{ data: %{}}}} 
+    
+    def call( method, url, token, result ) do
+        IO.puts "calling #{url} using #{method} with #{token}"
+
+        case TokenRegistry.get( "jwt_local" ) do
+            {:ok, token} ->
+                # headers = [{"Authorization", "Bearer #{token}"}, {"Content-Type", "application/json"}]
+                case method do
+                    "get" ->
+                        req = Req.new( url: url, method: :get, auth: {:bearer, token}, headers: [{"content-type", "application/json"}])
+                        {_request, response} = Req.Request.run_request(req)
+                        case response.status do 
+                            200 ->
+                                IO.puts "inspecting body"
+                                IO.inspect response.body
+                                {:ok, %{key: result, value: response.body}}
+                            _exception ->
+                                {:error, %{msg: "failed to get", key: result}}
+                        end
+                    _method ->
+                        IO.puts "Method not yet implemented"
+                        {:error, "failed"}
+                end
+            {:error, msg} ->
+                IO.puts "calling #{url} using #{method} with #{token}. Error: #{msg}"
+                { result, "some output from calling system by url"}
+        end
+    end
+end

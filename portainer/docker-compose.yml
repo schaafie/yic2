@@ -1,0 +1,24 @@
+services:
+  phoenix:
+    image: "yic2:latest"
+    container_name: yic2_dev
+    volumes:
+      - "${LOCALYIC}:/yic2"
+    environment:
+      PGUSER: ${PGUSER}
+      PGPASSWORD: ${PGPASSWORD}
+      PGDATABASE: ${PGDATABASE}
+      PGPORT: "${PGPORT}"
+      PGHOST: ${PGHOST}
+    ports:
+      - "${YICPORT}:4000"
+    command: [sh, -c, "chmod +x ../entrypoint.sh && bash -c ../entrypoint.sh"]
+  httpd:
+      image: my_httpd:latest
+      container_name: my-httpd
+      ports:
+        - "${HTTPDPORT}:80"
+      environment:
+        - HTTPD_PREFIX=/usr/local/apache2
+      volumes:
+        - "${LOCALWEB}/website:/usr/local/apache2/htdocs:ro"
