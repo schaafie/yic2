@@ -20,6 +20,7 @@ defmodule Yic2Web.FormJSON do
       id: form.id,
       name: form.name,
       comment: form.comment,
+      owner: form.owner,
       version: form.version,
       definition: form.definition
     }

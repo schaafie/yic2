@@ -1,6 +1,7 @@
 defmodule Yic2.Forms.Form do
   use Ecto.Schema
   import Ecto.Changeset
+  import Yic2.SchemaValidator
 
   schema "forms" do
     field :name, :string
@@ -15,7 +16,7 @@ defmodule Yic2.Forms.Form do
   @doc false
   def changeset(form, attrs) do
     form
-    |> cast(attrs, [:name, :comment, :version, :definition])
-    |> validate_required([:name, :comment])
+    |> cast(attrs, [:name, :comment, :version, :definition, :owner])
+    |> validate_changes_against_schema( "form" )
   end
 end

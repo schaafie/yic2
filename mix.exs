@@ -53,7 +53,8 @@ defmodule Yic2.MixProject do
       {:bandit, "~> 1.5"},
       {:guardian, "~> 2.0"},
       {:bcrypt_elixir, "~> 3.0"},
-      {:cors_plug, "~> 3.0"}
+      {:cors_plug, "~> 3.0"},
+      {:jsv, "~> 0.25"}
    ]
   end
 

@@ -1,6 +1,7 @@
 defmodule Yic2.Iam.User do
   use Ecto.Schema
   import Ecto.Changeset
+  import Yic2.SchemaValidator
 
   schema "users" do
     field :firstname, :string
@@ -15,6 +16,6 @@ defmodule Yic2.Iam.User do
   def changeset(user, attrs) do
     user
     |> cast(attrs, [:firstname, :infix, :lastname, :email])
-    |> validate_required([:firstname, :lastname, :email])
+    |> validate_changes_against_schema( "user" )
   end
 end
